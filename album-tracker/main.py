@@ -2,7 +2,6 @@ import json
 from datetime import datetime
 import os
 
-# TODO: 1. albums can be sorted from chronologically.
 # TODO: 2. look-up the dataset to decrease O(n) complexity.
 # TODO - add statistical results
 # TODO - add basic UI
@@ -75,6 +74,12 @@ Enter 1 to see the albums of the month.
         print("INFO: Undefined process. Please just enter 0 or 1.")
 
 
+def chronologic_sorter(albums):
+    albums = sorted(albums, key=lambda x: int(x["released-on"][:2])) 
+    for album in albums:
+        print(album)
+
+
 def main():
     user_choise = user_option()
     if user_choise:
@@ -86,7 +91,7 @@ def main():
         album_saver(new_data)
     else:
         # TODO: 2. look-up the dataset to decrease O(n) complexity.
-        result = []
+        albums = []
         listener_choise = listener_option()
         if listener_choise:
             for data in dataset:
@@ -97,12 +102,10 @@ def main():
         else:
             for data in dataset:
                 if month_checker(data["released-on"]):
-                        result.append(data)
+                        albums.append(data)
                 else:
                     pass
-        for r in result:
-            # TODO: 1. albums can be sorted from chronologically.
-            print(r)
+        chronologic_sorter(albums)
 
 
 if __name__ == "__main__":
