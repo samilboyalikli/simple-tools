@@ -28,6 +28,11 @@ def initialize_dataset():
             print(f"[INFO] {DATA_FILE} created successfully.")
 
 
+def chronologic_sorter(albums):
+    albums = sorted(albums, key=lambda x: int(x["released-on"][:2])) 
+    return albums
+
+
 with open(DATA_FILE, "r", encoding="utf-8") as file:
     dataset = json.load(file)
 
@@ -68,6 +73,13 @@ def month_checker(day):
         return False    
 
 
+def month_checker_demo():
+    month = datetime.now()
+    format = month.strftime("%m")
+    if format in albums_by_month.keys():
+        return albums_by_month[format]
+
+
 def user_option():
     option = input("""
 For listen album print 0 and enter.
@@ -94,12 +106,6 @@ Enter 1 to see the albums of the month.
         print("[INFO] Undefined process. Please just enter 0 or 1.")
 
 
-def chronologic_sorter(albums):
-    albums = sorted(albums, key=lambda x: int(x["released-on"][:2])) 
-    for album in albums:
-        print(album)
-
-
 def main():
     user_choise = user_option()
     if user_choise:
@@ -110,7 +116,7 @@ def main():
         new_data["released-on"] = input("When Released: ")
         album_saver(new_data)
     else:
-        albums = []
+        # albums = []
         listener_choise = listener_option()
         if listener_choise:
             result = date_checker_demo()
@@ -119,21 +125,17 @@ def main():
                     print(r)
             else:
                 print(result)
-                
-
-        # if listener_choise:
-        #     for data in dataset:
-        #         if date_checker(data["released-on"]):
-        #             print(data)
-        #         else:
-        #             pass
         else:
-            for data in dataset:
-                if month_checker(data["released-on"]):
-                        albums.append(data)
-                else:
-                    pass
-        chronologic_sorter(albums)
+            result = month_checker_demo()
+            sorted_result = chronologic_sorter(result)
+            for r in sorted_result:
+                print(r)
+            # for data in dataset:
+            #     if month_checker(data["released-on"]):
+            #             albums.append(data)
+            #     else:
+            #         pass
+        # chronologic_sorter(albums)
 
 
 if __name__ == "__main__":
