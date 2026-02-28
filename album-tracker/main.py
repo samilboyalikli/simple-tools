@@ -38,6 +38,7 @@ def chronologic_sorter(albums):
 
 
 def album_saver(album):
+    dataset.append(album)
     with open(DATA_FILE, "w", encoding='utf-8') as file:
         json.dump(dataset, file, indent=4, ensure_ascii=False)
         print("[INFO] New album added to the list.")
